@@ -10,15 +10,24 @@ class TripServiceTest extends TestCase
     /**
      * @var TripService
      */
-    private $tripService;
+    private $target;
 
     protected function setUp()
     {
-        $this->tripService = new TripService;
+        $this->target = new TripService;
     }
 
-    /** @test */ public function 
-    it_does_something() {
+    public function testShould_Throw_Exception_When_User_Is_Not_LoggedIn()
+    {
         $this->fail('This test has not been implemented yet.');
+    }
+
+    public function testShould_Not_Return_Trips_When_Logged_User_Are_Not_Friend()
+    {
+    }
+
+    public function testShould_Return_Trips_When_Logged_User_Are_Friend()
+    {
+
     }
 }
