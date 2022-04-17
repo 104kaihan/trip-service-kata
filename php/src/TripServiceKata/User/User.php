@@ -13,8 +13,8 @@ class User
     public function __construct($name)
     {
         $this->name = $name;
-        $this->trips = array();
-        $this->friends = array();
+        $this->trips = [];
+        $this->friends = [];
     }
 
     public function getTrips()
@@ -35,5 +35,23 @@ class User
     public function addTrip(Trip $trip)
     {
         $this->trips[] = $trip;
+    }
+
+    /**
+     * @param User $loggedUser
+     *
+     * @return bool
+     */
+    public function isFriend(User $loggedUser): bool
+    {
+        $isFriend = false;
+        foreach ($this->getFriends() as $friend) {
+            if ($friend == $loggedUser) {
+                $isFriend = true;
+                break;
+            }
+        }
+
+        return $isFriend;
     }
 }

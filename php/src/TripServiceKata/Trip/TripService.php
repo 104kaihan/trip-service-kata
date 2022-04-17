@@ -23,30 +23,11 @@ class TripService
         $loggedUser = $userSessionHelp->getLoggedUser();
 
         if ($loggedUser !== null) {
-            $isFriend = $this->isFriend($user, $loggedUser);
+            $isFriend = $user->isFriend($loggedUser);
 
             return $isFriend ? $this->tripDAOHelp->findTripsByUser($user) : [];
         }
 
         throw new UserNotLoggedInException();
-    }
-
-    /**
-     * @param User $user
-     * @param User $loggedUser
-     *
-     * @return bool
-     */
-    public function isFriend(User $user, User $loggedUser): bool
-    {
-        $isFriend = false;
-        foreach ($user->getFriends() as $friend) {
-            if ($friend == $loggedUser) {
-                $isFriend = true;
-                break;
-            }
-        }
-
-        return $isFriend;
     }
 }
