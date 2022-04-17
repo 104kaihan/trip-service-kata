@@ -23,7 +23,6 @@ class TripService
         $loggedUser = $userSessionHelp->getLoggedUser();
 
         if ($loggedUser !== null) {
-            $tripList = [];
             $isFriend = false;
             foreach ($user->getFriends() as $friend) {
                 if ($friend == $loggedUser) {
@@ -31,11 +30,8 @@ class TripService
                     break;
                 }
             }
-            if ($isFriend) {
-                $tripList = $this->tripDAOHelp->findTripsByUser($user);
-            }
 
-            return $tripList;
+            return $isFriend ? $this->tripDAOHelp->findTripsByUser($user) : [];
         }
 
         throw new UserNotLoggedInException();
