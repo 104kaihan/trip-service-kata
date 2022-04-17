@@ -48,9 +48,21 @@ class TripServiceTest extends TestCase
 
         $this->assertSame($expected, $actual);
     }
-//
-//    public function testShould_Return_Trips_When_Logged_User_Are_Friend()
-//    {
-//
-//    }
+
+    public function testShould_Return_Trips_When_Logged_User_Are_Friend()
+    {
+        $expected = 1;
+
+        $mockUserSession = $this->createMock(UserSessionHelp::class);
+        $mockUserSession->method('getLoggedUser')
+            ->willReturn($loggedOne = new User('Logged_one'));
+
+        $someOne = new User('Some_one');
+        $someOne->addFriend(new User('aFriend'));
+        $someOne->addFriend($loggedOne);
+        $someOne->addTrip(new Trip());
+        $actual = $this->target->getTripsByUser($someOne, $mockUserSession);
+
+        $this->assertSame($expected, count($actual));
+    }
 }
