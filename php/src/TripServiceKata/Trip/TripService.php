@@ -8,6 +8,16 @@ use TripServiceKata\User\UserSessionHelp;
 
 class TripService
 {
+    /**
+     * @var TripDAOHelp
+     */
+    private $tripDAOHelp;
+
+    public function __construct(TripDAOHelp $tripDAOHelp)
+    {
+        $this->tripDAOHelp = $tripDAOHelp;
+    }
+
     public function getTripsByUser(User $user, UserSessionHelp $userSessionHelp)
     {
         $tripList = [];
@@ -21,7 +31,7 @@ class TripService
                 }
             }
             if ($isFriend) {
-                $tripList = TripDAO::findTripsByUser($user);
+                $tripList = $this->tripDAOHelp->findTripsByUser($user);
             }
 
             return $tripList;

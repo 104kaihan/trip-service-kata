@@ -5,6 +5,7 @@ namespace Test\TripServiceKata\Trip;
 use PHPUnit\Framework\TestCase;
 use TripServiceKata\Exception\UserNotLoggedInException;
 use TripServiceKata\Trip\Trip;
+use TripServiceKata\Trip\TripDAOHelp;
 use TripServiceKata\Trip\TripService;
 use TripServiceKata\User\User;
 use TripServiceKata\User\UserSessionHelp;
@@ -18,7 +19,7 @@ class TripServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->target = new TripService;
+        $this->target = new TripService(new TripDAOHelp());
     }
 
     public function testShould_Throw_Exception_When_User_Is_Not_LoggedIn()
@@ -61,7 +62,13 @@ class TripServiceTest extends TestCase
         $someOne->addFriend(new User('aFriend'));
         $someOne->addFriend($loggedOne);
         $someOne->addTrip(new Trip());
-        $actual = $this->target->getTripsByUser($someOne, $mockUserSession);
+
+        $mockTripDAO = $this->createMock(TripDAOHelp::class);
+        $mockTripDAO->method('findTripsByUser')
+            ->willReturn($someOne->getTrips());
+
+        $target = new TripService($mockTripDAO);
+        $actual = $target->getTripsByUser($someOne, $mockUserSession);
 
         $this->assertSame($expected, count($actual));
     }
