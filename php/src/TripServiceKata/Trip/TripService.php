@@ -20,10 +20,11 @@ class TripService
 
     public function getTripsByUser(User $user, UserSessionHelp $userSessionHelp)
     {
-        $tripList = [];
         $loggedUser = $userSessionHelp->getLoggedUser();
-        $isFriend = false;
-        if ($loggedUser != null) {
+
+        if ($loggedUser !== null) {
+            $tripList = [];
+            $isFriend = false;
             foreach ($user->getFriends() as $friend) {
                 if ($friend == $loggedUser) {
                     $isFriend = true;
@@ -35,8 +36,8 @@ class TripService
             }
 
             return $tripList;
-        } else {
-            throw new UserNotLoggedInException();
         }
+
+        throw new UserNotLoggedInException();
     }
 }
