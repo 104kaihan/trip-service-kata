@@ -4,6 +4,7 @@ namespace Test\TripServiceKata\Trip;
 
 use PHPUnit\Framework\TestCase;
 use TripServiceKata\Exception\UserNotLoggedInException;
+use TripServiceKata\Trip\Trip;
 use TripServiceKata\Trip\TripService;
 use TripServiceKata\User\User;
 use TripServiceKata\User\UserSessionHelp;
@@ -32,9 +33,21 @@ class TripServiceTest extends TestCase
         $this->target->getTripsByUser($someOne, $mockUserSession);
     }
 
-//    public function testShould_Not_Return_Trips_When_Logged_User_Are_Not_Friend()
-//    {
-//    }
+    public function testShould_Not_Return_Trips_When_Logged_User_Are_Not_Friend()
+    {
+        $expected = [];
+
+        $mockUserSession = $this->createMock(UserSessionHelp::class);
+        $mockUserSession->method('getLoggedUser')
+            ->willReturn(new User('Logged_one'));
+
+        $someOne = new User('Some_one');
+        $someOne->addFriend(new User('aFriend'));
+        $someOne->addTrip(new Trip());
+        $actual = $this->target->getTripsByUser($someOne, $mockUserSession);
+
+        $this->assertSame($expected, $actual);
+    }
 //
 //    public function testShould_Return_Trips_When_Logged_User_Are_Friend()
 //    {
